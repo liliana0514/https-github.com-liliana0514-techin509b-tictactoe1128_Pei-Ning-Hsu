@@ -2,6 +2,8 @@
 # or output happens here. The logic in this file
 # should be unit-testable.
 import random
+import csv
+from datetime import datetime
 
 class Player:
     def __init__(self, name, symbol):
@@ -88,3 +90,10 @@ class Game:
         return self.winner
     def announce_winner(self, winner):
         print(f"{winner.name} wins!")
+    def record_winner(self):
+        with open('logs/game_log.csv', mode='a', newline='') as file:
+            writer = csv.writer(file)
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            winner_name = self.get_winner().name if self.get_winner() else 'Draw'
+            writer.writerow([timestamp, self.players[0].name, self.players[1].name, winner_name])
+
